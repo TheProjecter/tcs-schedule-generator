@@ -8,7 +8,7 @@ namespace SchedulerGUI.CSP_Solver
 {
     class CSPSolver
     {
-        public Schedule[] findScheduleSolution(Course[] courses)
+        public ScheduleState findScheduleSolution(Stack<Course> courses)
         {
             return null;
         }

@@ -28,7 +28,7 @@ namespace SchedulerGUI.ClassInformation
 		
 		//Number of days the course is taught per week.
         int daysPerWeek;
-		
+
 		//Constructor for the Course which sets the parameter information calls the second constructor.
         public Course(int courseCode, string teacherName, string courseName, string courseRoom, int hoursPerWeek) 
             : this(courseCode, teacherName, courseName, courseRoom, hoursPerWeek, 0)
@@ -53,6 +53,7 @@ namespace SchedulerGUI.ClassInformation
 		//Getter for the course code.  Formatted as a string for the output schedule
         public string getCourseCode()
         {
+            //Concatenate the course name and course code for formatting
             string information = courseName + courseCode;
             return information;
         }
@@ -60,6 +61,7 @@ namespace SchedulerGUI.ClassInformation
 		//Getter for the teacher's name.  Formatted for the output schedule.
         public string getTeacherName()
         {
+            //Concatenate the teacher abbreviation with teacher's name for formatting.
             string information = " T. " + teacherName;
             return information;
         }
@@ -67,6 +69,7 @@ namespace SchedulerGUI.ClassInformation
 		//Getter for the course room.  Formatted for the output schedule.
         public string getCourseRoom()
         {
+            //Concatenate grade abbreviation with course room for formatting
             string information = "G." + courseRoom;
             return information;
         }

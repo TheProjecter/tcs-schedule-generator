@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SchedulerGUI.ClassInformation;
+using System.Collections;
 
 namespace SchedulerGUI.CSP_Solver
 {
@@ -15,34 +16,60 @@ namespace SchedulerGUI.CSP_Solver
         Dictionary<string, Schedule> schedules;
 		
 		//The remaining courses to schedule.
-        Course[] domainOfCourses;
+        Stack<Course> domainOfCourses;
 		
 		//Original constructor using an array of Schedules before the dictionary is made.
-        public ScheduleState(Schedule[] schedules, Course[] domainOfCourses)
+        public ScheduleState(List<Schedule> schedules, Course[] domainOfCourses) : this(schedules)
         {
 			//Set the class variable to the courses remaining for scheduling.
-			this.domainOfCourses = domainOfCourses;
+            this.domainOfCourses = new Stack<Course>();
+            
+            foreach (Course course in domainOfCourses)
+            {
+                this.domainOfCourses.Push(course);
+            }
 			
-			//For each schedule in the array, add it to the dictionary as a value.
+			
+        }
+
+        public ScheduleState(List<Schedule> schedules, Stack<Course> domainOfCourses) : this(schedules)
+        {
+            this.domainOfCourses = domainOfCourses;
+        }
+
+        private ScheduleState(List<Schedule> schedules)
+        {
+            //For each schedule in the array, add it to the dictionary as a value.
             foreach (Schedule schedule in schedules)
             {
-				//The key for HomeroomSchedules is the room name.
+                //The key for HomeroomSchedules is the room name.
                 if (schedule is HomeroomSchedule)
                 {
-                    schedules.Add(((HomeroomSchedule)schedule).getHomeroomName(), schedule);
+                    this.schedules.Add(((HomeroomSchedule)schedule).getHomeroomName(), new HomeroomSchedule(schedule));
                 }
-				//The key for TeacherSchedules is the teacher's name.
+                //The key for TeacherSchedules is the teacher's name.
                 else if (schedule is TeacherSchedule)
                 {
-                    schedules.Add(((TeacherSchedule)schedule).getTeacherName(), schedule);
+                    this.schedules.Add(((TeacherSchedule)schedule).getTeacherName(), new TeacherSchedule(schedule));
                 }
             }
         }
-		
+
 		//Overloaded constructor for inputting the dictionary directly.
-		public ScheduleState(Dictionary<string, Schedule> schedules, Course[] domainOfCourses) 
-		{
-			this.schedules = schedules;
+		public ScheduleState(Dictionary<string, Schedule> schedules, Stack<Course> domainOfCourses)
+        {
+            foreach (string str in schedules.Keys)
+            {
+                if (schedules[str] is HomeroomSchedule)
+                {
+                    this.schedules.Add(str, new HomeroomSchedule(schedules[str]));
+                }
+                if (schedules[str] is TeacherSchedule)
+                {
+                    this.schedules.Add(str, new TeacherSchedule(schedules[str]));
+                }
+            }
+
 			this.domainOfCourses = domainOfCourses;
 		}
 		
@@ -59,7 +86,7 @@ namespace SchedulerGUI.CSP_Solver
         }
 		
 		//Getter method for the remaining courses.
-        public Course[] getCourses()
+        public Stack<Course> getCourses()
         {
             return this.domainOfCourses;
         }
