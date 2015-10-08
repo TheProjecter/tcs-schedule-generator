@@ -1,0 +1,1 @@
+This project will create a constraint satisfaction problem solver used to generate teacher and class schedules for a school given a list of course information.
